@@ -4,6 +4,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -147,6 +149,7 @@ public class paint{
 class PadDraw extends JComponent{
 	
     BufferedImage image;
+    BufferedImage original;
     BufferedImage scribbled;
 
 	Graphics2D graphics2D;
@@ -195,7 +198,7 @@ class PadDraw extends JComponent{
 		
 		for(int x=0; x<img.getWidth(); x++){
 			for(int y=0; y<img.getHeight(); y++){
-				final int clr = image.getRGB(x, y);
+				final int clr = img.getRGB(x, y);
                 final int red = (clr & 0x00ff0000) >> 16;
                 final int green = (clr & 0x0000ff00) >> 8;
                 final int blue = clr & 0x000000ff;                
@@ -218,6 +221,7 @@ class PadDraw extends JComponent{
 					//image =  ImageIO.read(new File("images/test.JPG"));
 					//image = loadImage("images/test.JPG");
 					image = makeGray(image);
+					original = deepCopy(image);
 					double[][]arr = new double[image.getWidth()][image.getHeight()];
 					for(int i=0; i<image.getWidth();i++){
 						for(int j=0; j<image.getHeight();j++){
@@ -308,6 +312,17 @@ class PadDraw extends JComponent{
 	
 	public BufferedImage getScribbled(){
 		return scribbled;
+	}
+	
+	public BufferedImage getOriginal(){
+		return original;
+	}
+	
+	static BufferedImage deepCopy(BufferedImage bi) {
+		 ColorModel cm = bi.getColorModel();
+		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		 WritableRaster raster = bi.copyData(null);
+		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
 	}
 
 }
