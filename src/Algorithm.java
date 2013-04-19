@@ -1,4 +1,8 @@
 import Jama.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 
 public class Algorithm {
@@ -13,6 +17,18 @@ public class Algorithm {
 	
 	public void runAlg(){
 		System.out.println("ran the algorithm");
+		exportImg(pad.getScribbled(),"saved.png");
+	}
+	
+	public void exportImg(BufferedImage img, String name){
+		try {
+		    // retrieve image
+		    File outputfile = new File(name);
+		    ImageIO.write(img, "png", outputfile);
+		    System.out.println("saved!");
+		} catch (IOException e) {
+			System.out.println("error");
+		}
 	}
 	
 	public double[][] getWindow(Matrix A, int i, int j){

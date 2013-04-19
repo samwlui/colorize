@@ -63,6 +63,8 @@ public class paint{
 		JButton runButton = new JButton("Colorize");
 		runButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				
+				drawPad.setScribbled(drawPad.getCurrentScreen());
 				Algorithm alg = new Algorithm(drawPad);
 				alg.runAlg();
 
@@ -144,8 +146,8 @@ public class paint{
 
 class PadDraw extends JComponent{
 	
-     BufferedImage image;
-	//this is gonna be your image that you draw on
+    BufferedImage image;
+    BufferedImage scribbled;
 
 	Graphics2D graphics2D;
 	//this is what we'll be using to draw on
@@ -257,6 +259,13 @@ class PadDraw extends JComponent{
 		graphics2D.setPaint(Color.black);
 		repaint();
 	}
+	
+	public BufferedImage getCurrentScreen(){
+		BufferedImage img = new BufferedImage(image.getWidth(), image.getHeight(),BufferedImage.TYPE_INT_RGB);
+		this.paint(img.getGraphics());
+		return img;
+	}
+	
 	//this is the clear
 	//it sets the colors as white
 	//then it fills the window with white
@@ -288,5 +297,17 @@ class PadDraw extends JComponent{
 		repaint();
 	}
 	//green paint
+	
+	public void setScribbled(BufferedImage img){
+		this.scribbled = img;
+	}
+	
+	public BufferedImage getImage(){
+		return image;
+	}
+	
+	public BufferedImage getScribbled(){
+		return scribbled;
+	}
 
 }
